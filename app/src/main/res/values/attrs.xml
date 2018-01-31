@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name = "SwipeSelectionView">
+        <attr name = "strokeColor" format = "color" />
+        <attr name = "strokeWidth" format = "float" />
+        <attr name = "sTitleTextColor" format = "color" />
+        <attr name = "iTitleTextSize" format = "float" />
+        <attr name = "titleBackgroundColor" format = "color" />
+        <attr name = "roundedCornner" format = "float" />
+        <attr name = "sideSpacing" format = "integer" />
+        <attr name = "setAlpha" format = "integer" />
+    </declare-styleable>
+</resources>
