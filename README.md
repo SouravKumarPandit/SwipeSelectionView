@@ -5,4 +5,5 @@ object so it dont effect  the ui or performace of the device,run it once to know
 
 Just need to pass the string array  in to that constructor
 
+bug with stok i remove line from canvas . i will try to fix soon
 
