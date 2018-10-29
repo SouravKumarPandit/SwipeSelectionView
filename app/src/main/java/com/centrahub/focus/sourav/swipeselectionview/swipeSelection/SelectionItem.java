@@ -49,8 +49,9 @@ public class SelectionItem extends View /*implements View.OnClickListener*/ {
     private float titalTextSize = 16;
     private int lableBackgroundColor;
 
-    private float strokeWidth=1;
+    private float strokeWidth = 1;
     private int fix_text_height;
+    private boolean strokeEnable;
 
     public SelectionItem(Context context) {
         this(context, null);
@@ -64,21 +65,17 @@ public class SelectionItem extends View /*implements View.OnClickListener*/ {
         super(context, attrs, defStyleAttr);
         init(context);
     }
+
     private void init(Context context) {
         initAttrs();
         initTools(context);
     }
 
     private void initAttrs() {
-//        selected day color
-//        selectTextSize = bottomTextSize;
         lableBackgroundColor = Color.WHITE;
         topTitleColor = Color.BLACK;
-        strokeColor = Color.WHITE
-        ;
+        strokeColor = Color.WHITE;
         detialColorBackground = Color.WHITE;
-//        initDates();
-
     }
 
     private void initTools(Context context) {
@@ -109,7 +106,7 @@ public class SelectionItem extends View /*implements View.OnClickListener*/ {
         if (sTitleText != null && !sTitleText.isEmpty())
             titalpaint.getTextBounds(sTitleText, 0, sTitleText.length(), detailPaintBound);
 
-         text_height = (new StaticLayout(sTitleText, titalpaint, detailPaintBound.width(), Layout.Alignment.ALIGN_NORMAL, 0.8f, 0.0f, false)).getHeight();
+        text_height = (new StaticLayout(sTitleText, titalpaint, detailPaintBound.width(), Layout.Alignment.ALIGN_NORMAL, 0.8f, 0.0f, false)).getHeight();
 
         this.fix_text_height = detailPaintBound.height();
 
@@ -117,6 +114,7 @@ public class SelectionItem extends View /*implements View.OnClickListener*/ {
 
         invalidate();
     }
+
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
@@ -135,9 +133,10 @@ public class SelectionItem extends View /*implements View.OnClickListener*/ {
 
     private void drawTitleTop(Canvas canvas) {
 //        backgroundRect.set(0, 0, itemWidth * rows, itemHeight / 2);
-        titleRectTop.set(sideSpacing, 0, canvas.getWidth()-sideSpacing, itemHeight);
+        titleRectTop.set(sideSpacing, 0, canvas.getWidth() - sideSpacing, itemHeight);
         canvas.drawRoundRect(titleRectTop, roundedX, roundedY, backgroundTopPaint);
-        canvas.drawRoundRect(titleRectTop,roundedX,roundedX,strokePaint);
+        if (strokeWidth>0)
+        canvas.drawRoundRect(titleRectTop, roundedX, roundedX, strokePaint);
 //        canvas.drawRect(titleRectTop, backgroundTopPaint);
         String truncatedText = sTitleText;
         byte textSize = 30;
@@ -153,7 +152,7 @@ public class SelectionItem extends View /*implements View.OnClickListener*/ {
             }
         }
         int xPos = canvas.getWidth() / 2 - (int) (titalpaint.measureText(sTitleText) / 2);
-        canvas.drawText(truncatedText, xPos, canvas.getHeight() / 2+fix_text_height/2, titalpaint);
+        canvas.drawText(truncatedText, xPos, canvas.getHeight() / 2 + fix_text_height / 2, titalpaint);
     }
 
     public boolean checkIsTab(Context context) {
@@ -162,6 +161,37 @@ public class SelectionItem extends View /*implements View.OnClickListener*/ {
                 >= Configuration.SCREENLAYOUT_SIZE_LARGE;
     }
 
+    /*private PointF startPoint;
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            startPoint = new PointF(event.getX(), event.getY());
+//            Log.i(TAG,startPoint.toString());
+            return true;
+        } else if (event.getAction() == MotionEvent.ACTION_UP) {
+            float x = event.getX();
+            float y = event.getY();
+//            Log.i(TAG,x+","+y);
+            //选中日期
+            if (Math.abs(startPoint.x - x) < 20 && Math.abs(startPoint.y - y) < 20) {
+
+                    for (int j = 0; j < rows; j++) {
+                        if (x > itemWidth * j && x < itemWidth * (j + 1) && y > itemHeight * (1) && y < itemHeight * (2)) {
+
+                            if (onItemSelectListener != null) {
+                                onItemSelectListener.onSelect(ListSwipeUtil.getItemList(5));
+                            }
+                            invalidate();
+                        }
+
+                }
+                return true;
+            }
+        }
+        return super.onTouchEvent(event);
+    }
+*/
     public int sp2px(float sp) {
         Resources r = Resources.getSystem();
         final float scale = r.getDisplayMetrics().density;
@@ -184,6 +214,8 @@ public class SelectionItem extends View /*implements View.OnClickListener*/ {
 
     public void setStrokeWidth(float strokeWidth) {
         this.strokeWidth = strokeWidth;
+        initTools(getContext());
+        invalidate();
     }
 
     public int getTopTitleColor() {
@@ -200,6 +232,7 @@ public class SelectionItem extends View /*implements View.OnClickListener*/ {
     }
 
     private int sAtPositon;
+
     public float getTitalTextSize() {
         return titalTextSize;
 
@@ -230,15 +263,11 @@ public class SelectionItem extends View /*implements View.OnClickListener*/ {
         initTools(getContext());
         invalidate();
     }
-
     public void setStrokeColor(int strokeColor) {
         this.strokeColor = strokeColor;
         initTools(getContext());
         invalidate();
     }
-
-
-
     public float getSideSpacing() {
         return sideSpacing;
     }
@@ -254,7 +283,11 @@ public class SelectionItem extends View /*implements View.OnClickListener*/ {
         invalidate();
     }
 
-
+    public void setStrokeEnable(boolean strokeEnable) {
+        this.strokeEnable = strokeEnable;
+        initTools(getContext());
+        invalidate();
+    }
 
     public void setSideSpacing(float sideSpacing) {
         this.sideSpacing = sideSpacing;
@@ -262,9 +295,14 @@ public class SelectionItem extends View /*implements View.OnClickListener*/ {
         invalidate();
 
     }
+    private OnItemSelectListener onItemSelectListener;
 
-
-
+    public void setOnItemSelectListener(OnItemSelectListener onItemSelectListener) {
+        this.onItemSelectListener = onItemSelectListener;
+    }
+    public interface OnItemSelectListener {
+        void onSelect(ItemListHolderDTO calenderBean);
+    }
 
 
 }

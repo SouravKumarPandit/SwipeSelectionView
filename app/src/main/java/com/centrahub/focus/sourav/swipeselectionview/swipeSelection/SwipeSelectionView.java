@@ -29,6 +29,21 @@ public class SwipeSelectionView extends ViewPager {
     private float roundedCorner;
     private String[] selectionList;
     private int currentValue;
+
+//    private  boolean strokeEnabel=true;
+
+/*    public boolean isStrokeEnabel() {
+        return strokeEnabel;
+    }
+
+    public void setStrokeEnabel(boolean strokeEnabel) {
+        this.strokeEnabel = strokeEnabel;
+        init(null);
+        invalidate();
+    }*/
+
+
+
     private int alphaTransparent;
 
     public SwipeSelectionView(Context context, String[] stringArray) {
@@ -103,7 +118,7 @@ public class SwipeSelectionView extends ViewPager {
         sTitleTextSize = typedArray.getFloat(R.styleable.SwipeSelectionView_iTitleTextSize, 18);
         titleBackground = typedArray.getColor(R.styleable.SwipeSelectionView_titleBackgroundColor, getResources().getColor(R.color.colorPrimaryDark));
         strokeColor = typedArray.getColor(R.styleable.SwipeSelectionView_strokeColor, Color.GRAY);
-        strokeWidth = typedArray.getFloat(R.styleable.SwipeSelectionView_strokeWidth, 2);
+        strokeWidth = typedArray.getFloat(R.styleable.SwipeSelectionView_strokeWidth, 0);
         roundedCorner = typedArray.getFloat(R.styleable.SwipeSelectionView_roundedCornner, 5);
         sideMargin = typedArray.getColor(R.styleable.SwipeSelectionView_sideSpacing, 1);
         alphaTransparent = typedArray.getColor(R.styleable.SwipeSelectionView_setAlpha, 0);
@@ -120,16 +135,26 @@ public class SwipeSelectionView extends ViewPager {
                 ListSwipeUtil.previousUnit(selectionList.length - 1)};
         calenderItemViews = new SelectionItem[itemListHolderDTOS.length];
         for (int i = 0; i < calenderItemViews.length; i++) {
-            SelectionItem calenderItemView = calenderItemViews[i] == null ? new SelectionItem(getContext()) : calenderItemViews[i];
+            SelectionItem selectionItem = calenderItemViews[i] == null ? new SelectionItem(getContext()) : calenderItemViews[i];
 //            calenderItemView.setSideSpacing();
-            calenderItemView.setTitalTextSize(sTitleTextSize);
-            calenderItemView.setTopTitleColor(sTitleTextColor);
-            calenderItemView.setLableBackgroundColor(titleBackground);
-            calenderItemView.setRounded(roundedCorner,roundedCorner);
-            calenderItemView.setStrokeWidth(strokeWidth);
-            calenderItemView.setSideSpacing(sideMargin);
-            calenderItemView.setLableAlpha(alphaTransparent);
-            calenderItemViews[i] = calenderItemView;
+            selectionItem.setTitalTextSize(sTitleTextSize);
+            selectionItem.setTopTitleColor(sTitleTextColor);
+            selectionItem.setLableBackgroundColor(titleBackground);
+            selectionItem.setRounded(roundedCorner,roundedCorner);
+            selectionItem.setStrokeWidth(strokeWidth);
+            selectionItem.setSideSpacing(sideMargin);
+            selectionItem.setLableAlpha(alphaTransparent);
+            selectionItem.setStrokeColor(strokeColor);
+            selectionItem.setOnItemSelectListener(new SelectionItem.OnItemSelectListener() {
+
+                @Override
+                public void onSelect(ItemListHolderDTO calenderBean) {
+                    if (onItemSelectListener != null) {
+                        onItemSelectListener.onSelect(calenderBean);
+                    }
+                }
+            });
+            calenderItemViews[i] = selectionItem;
         }
     }
 
@@ -148,7 +173,6 @@ public class SwipeSelectionView extends ViewPager {
 
 
     /**
-     * 设置日历数组数据
      *
      * @param calenderWeekBean
      * @param position
@@ -165,13 +189,14 @@ public class SwipeSelectionView extends ViewPager {
         itemListHolderDTOS[(position - 1 + 3) % 3] = ListSwipeUtil.previousUnit(calenderWeekBean.getItemPosion());
         for (int i = 0; i < itemListHolderDTOS.length; i++) {
             calenderItemViews[i].setsTitleText(itemListHolderDTOS[i].getItemLabel());
-            calenderItemViews[i].setTitalTextSize(sTitleTextSize);
-            calenderItemViews[i].setTopTitleColor(sTitleTextColor);
-            calenderItemViews[i].setLableBackgroundColor(titleBackground);
-            calenderItemViews[i].setRounded(roundedCorner,roundedCorner);
-            calenderItemViews[i].setStrokeWidth(strokeWidth);
-            calenderItemViews[i].setSideSpacing(sideMargin);
-            calenderItemViews[i].setLableAlpha(alphaTransparent);
+//            calenderItemViews[i].setTitalTextSize(sTitleTextSize);
+//            calenderItemViews[i].setTopTitleColor(sTitleTextColor);
+//            calenderItemViews[i].setLableBackgroundColor(titleBackground);
+//            calenderItemViews[i].setRounded(roundedCorner,roundedCorner);
+//            calenderItemViews[i].setStrokeWidth(strokeWidth);
+//            calenderItemViews[i].setStrokeColor(strokeColor);
+//            calenderItemViews[i].setSideSpacing(sideMargin);
+//            calenderItemViews[i].setLableAlpha(alphaTransparent);
             calenderItemViews[i].setsAtPositon(iPagerPosition);
         }
     }
@@ -196,12 +221,80 @@ public class SwipeSelectionView extends ViewPager {
     public int getCurrentValue() {
         return currentValue;
     }
+    public int getStrokeColor() {
+        return strokeColor;
+    }
 
+    public void setStrokeColor(int strokeColor) {
+        this.strokeColor = strokeColor;
+//        init(null);
+        invalidate();
+    }
+
+    public float getStrokeWidth() {
+        return strokeWidth;
+    }
+
+    public void setStrokeWidth(float strokeWidth) {
+        this.strokeWidth = strokeWidth;
+        invalidate();
+    }
+
+    public int getsTitleTextColor() {
+        return sTitleTextColor;
+    }
+
+    public void setsTitleTextColor(int sTitleTextColor) {
+        this.sTitleTextColor = sTitleTextColor;
+//        init(null);
+        invalidate();
+    }
+
+    public float getsTitleTextSize() {
+        return sTitleTextSize;
+    }
+
+    public void setsTitleTextSize(float sTitleTextSize) {
+        this.sTitleTextSize = sTitleTextSize;
+//        init(null);
+        invalidate();
+    }
+
+    public int getSideMargin() {
+        return sideMargin;
+    }
+
+    public void setSideMargin(int sideMargin) {
+        this.sideMargin = sideMargin;
+//        init(null);
+        invalidate();
+    }
+
+    public float getRoundedCorner() {
+        return roundedCorner;
+
+    }
+
+    public void setRoundedCorner(float roundedCorner) {
+        this.roundedCorner = roundedCorner;
+//        init(null);
+        invalidate();
+    }
+
+    public int getAlphaTransparent() {
+        return alphaTransparent;
+    }
+
+    public void setAlphaTransparent(int alphaTransparent) {
+        this.alphaTransparent = alphaTransparent;
+//        init(null);
+        invalidate();
+    }
     public void setCurrentValue(int currentValue) {
         if (currentValue < 0 || currentValue > selectionList.length)
             return;
         this.currentValue = currentValue;
-        init(null);
+//        init(null);
         invalidate();
     }
 
@@ -219,6 +312,11 @@ public class SwipeSelectionView extends ViewPager {
     public interface OnCalenderPageChangeListener {
         void onChange(int itemPosition, String itemLabel);
     }
+    private SelectionItem.OnItemSelectListener onItemSelectListener;
 
+
+    public void setOnItemSelectListener(SelectionItem.OnItemSelectListener onItemSelectListener) {
+        this.onItemSelectListener = onItemSelectListener;
+    }
 
 }

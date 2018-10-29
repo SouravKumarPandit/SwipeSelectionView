@@ -1,5 +1,6 @@
 package com.centrahub.focus.sourav.swipeselectionview;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
@@ -14,7 +15,7 @@ import com.centrahub.focus.sourav.swipeselectionview.swipeSelection.SwipeSelecti
 
 public class MainActivity extends AppCompatActivity {
 
-    public String[] listOfFood;
+    public String[] listOfFood={"Bakery and Bread","Meat and Seafood","Pasta and Rice","Oils","Salad Dressings","Condiments","Cereals","Soups and Canned","Eggs","Cheese","Dairy"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,13 +25,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initArrayList() {
-        listOfFood = new String[15];
+/*        listOfFood = new String[15];
         for (int i = 0; i < 15; i++) {
             listOfFood[i ] = "Food Item - " + "<"+i+">";
             if (i==4)
                 listOfFood[i ] = "GG UyyypppItem - " + "<"+i+">";
 
-        }
+        }*/
     }
 
 
@@ -38,8 +39,8 @@ public class MainActivity extends AppCompatActivity {
         RelativeLayout linearLayout = new RelativeLayout(this);
         linearLayout.setGravity(Gravity.CENTER);
 //        linearLayout.setOrientation(LinearLayout.VERTICAL);
-//        linearLayout.setBackgroundColor(Color.BLACK);
-        linearLayout.setBackground(getResources().getDrawable(R.drawable.ic_launcher_background));
+        linearLayout.setBackgroundColor(Color.DKGRAY);
+//        linearLayout.setBackground(getResources().getDrawable(R.drawable.ic_launcher_background));
         linearLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
         ImageView img = new ImageView(this);
@@ -48,9 +49,21 @@ public class MainActivity extends AppCompatActivity {
 //        img.setImageDrawable(getResources().getDrawable(R.drawable.bg_image));
 
 
-        SwipeSelectionView clCalendarView = new SwipeSelectionView(this, listOfFood);
+        final SwipeSelectionView clCalendarView = new SwipeSelectionView(this, listOfFood);
         clCalendarView.setSelectionList(listOfFood);
+        clCalendarView.setStrokeColor(Color.TRANSPARENT);
+//        clCalendarView.setStrokeWidth(5);
+/*
+        clCalendarView.setOnItemSelectListener(new SelectionItem.OnItemSelectListener() {
+            @Override
+            public void onSelect(ItemListHolderDTO calenderBean) {
+                clCalendarView.setCurrentValue(calenderBean.getItemPosion()+1);
+            }
+        });
+*/
+
 //        clCalendarView.setCurrentValue(17);
+
         RelativeLayout.LayoutParams simpleDetailsViewParam = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         simpleDetailsViewParam.addRule(RelativeLayout.CENTER_IN_PARENT);
         clCalendarView.setLayoutParams(simpleDetailsViewParam);

@@ -9,5 +9,6 @@
         <attr name = "roundedCornner" format = "float" />
         <attr name = "sideSpacing" format = "integer" />
         <attr name = "setAlpha" format = "integer" />
+        <attr name = "strokeEnable" format = "boolean" />
     </declare-styleable>
 </resources>
