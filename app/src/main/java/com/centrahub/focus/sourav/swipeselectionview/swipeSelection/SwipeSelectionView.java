@@ -128,7 +128,7 @@ public class SwipeSelectionView extends ViewPager {
     private void initCalenderView() {
 
         ItemListHolderDTO listHolderDTO = ListSwipeUtil.getItemList(currentValue);
-        listHolderDTO = ListSwipeUtil.getFirstItem(selectionList[0], currentValue, false, true);
+        listHolderDTO = ListSwipeUtil.getFirstItem(currentValue);
 
         itemListHolderDTOS = new ItemListHolderDTO[]{listHolderDTO,
                 ListSwipeUtil.nextUnit(currentValue),
@@ -189,14 +189,14 @@ public class SwipeSelectionView extends ViewPager {
         itemListHolderDTOS[(position - 1 + 3) % 3] = ListSwipeUtil.previousUnit(calenderWeekBean.getItemPosion());
         for (int i = 0; i < itemListHolderDTOS.length; i++) {
             calenderItemViews[i].setsTitleText(itemListHolderDTOS[i].getItemLabel());
-//            calenderItemViews[i].setTitalTextSize(sTitleTextSize);
-//            calenderItemViews[i].setTopTitleColor(sTitleTextColor);
-//            calenderItemViews[i].setLableBackgroundColor(titleBackground);
-//            calenderItemViews[i].setRounded(roundedCorner,roundedCorner);
-//            calenderItemViews[i].setStrokeWidth(strokeWidth);
-//            calenderItemViews[i].setStrokeColor(strokeColor);
-//            calenderItemViews[i].setSideSpacing(sideMargin);
-//            calenderItemViews[i].setLableAlpha(alphaTransparent);
+            calenderItemViews[i].setTitalTextSize(sTitleTextSize);
+            calenderItemViews[i].setTopTitleColor(sTitleTextColor);
+            calenderItemViews[i].setLableBackgroundColor(titleBackground);
+            calenderItemViews[i].setRounded(roundedCorner,roundedCorner);
+            calenderItemViews[i].setStrokeWidth(strokeWidth);
+            calenderItemViews[i].setStrokeColor(strokeColor);
+            calenderItemViews[i].setSideSpacing(sideMargin);
+            calenderItemViews[i].setLableAlpha(alphaTransparent);
             calenderItemViews[i].setsAtPositon(iPagerPosition);
         }
     }
