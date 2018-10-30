@@ -13,7 +13,7 @@ public class ListSwipeUtil {
         return weekUtilCalender;
     }
 
-    public static ItemListHolderDTO getFirstItem(String newValue, int iPosition, boolean isLast, boolean isFirst) {
+    public static ItemListHolderDTO getFirstItem (int iPosition) {
         return getItemList(iPosition);
     }
 
